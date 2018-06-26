@@ -1,23 +1,40 @@
 ---
 title: "Skills Snapshot"
-output: html_notebook
+output: 
+  html_document: 
+    fig_caption: yes
+    fig_height: 7
+  html_notebook: 
+    fig_height: 7
+    fig_width: 7
 ---
 
 
 ```{r}
 require(GGally)     # Required for ggpairs
 require(ggplot2)    # GGally supersets on ggplot2
+require(ggpubr)
+
 require(gridExtra)
 library('datasets')
 
-data(iris, package = 'ggplot2')
+data(iris)
 
 str(iris)
 summary(iris)
 
-p_iris <-ggpairs(iris, title = "The Iris Data Set", upper = list(continuous = wrap("cor", size = 3)), lower = list(discrete = wrap("facetbar", bins = 10)), aes(color=Species))
+p_iris <-ggpairs(data=iris, title = "The Iris Data Set", upper = list(continuous = wrap("cor", size = 2, alignPercent=0.9)), 
+mapping=ggplot2::aes(color=Species), lower=list(combo=wrap("facethist",binwidth=1)))
 
-p_iris
+plot_iris <- p_iris +
+  theme_dark() + theme(axis.text.x = element_text(angle = 90))
+  # theme(axis.text.x = element_text(angle = 45), axis.text.y = element_text(angle = 45))
+
+# p_iris
+plot_iris
+```
+```{r}
+ggpairs(iris,upper = list(continuous = wrap('cor', method = "kendall",size=4,alignPercent=0.9)), axisLabels = "blank",ggplot2::aes(color = species),size=10) +theme(text = element_text(size=10),axis.text.x=element_text(angle=45,hjust=1,size=10)) + theme_bw()
 ```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
