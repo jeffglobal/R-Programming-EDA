@@ -18,14 +18,16 @@ ggpairs(data=chickwts, # data.frame with variables
 meat <- chickwts[chickwts$feed=="meatmeal",1]
 horse <- chickwts[chickwts$feed=="horsebean",1]
 
-boxplot(meat, horse)
 
+t.test(meat, horse)       # parametric, assumes normality
+wilcox.test(meat, horse)  # Non-parametric
+
+boxplot(meat, horse)
 
 subset_plot_meat<-ggplot(data=meat, aes(x = "meatmeal", y = weight)) +
   geom_boxplot()
 
 plot1<-subset_plot_meat + ylim(100,400)
-
 
 subset_plot_horse<-ggplot(data=horse, aes(x = "horsebean", y = weight)) +
   geom_boxplot()
