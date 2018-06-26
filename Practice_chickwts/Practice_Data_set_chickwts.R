@@ -21,8 +21,9 @@ horse <- chickwts[chickwts$feed=="horsebean",1]
 
 t.test(meat, horse)       # parametric, assumes normality
 wilcox.test(meat, horse)  # Non-parametric
-
-boxplot(meat, horse)
+                          # If comparing same subjects different
+                          # affects/treatments (pop1,pop2, paired=T)
+boxplot(meat, horse)      # for both t.test and wilcox.test
 
 subset_plot_meat<-ggplot(data=meat, aes(x = "meatmeal", y = weight)) +
   geom_boxplot()
