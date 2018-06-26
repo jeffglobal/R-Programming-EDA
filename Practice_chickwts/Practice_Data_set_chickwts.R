@@ -11,7 +11,7 @@ summary(chickwts)
 
 ggpairs(data=chickwts, # data.frame with variables
         title="Weight and Feed", 
-        aes(color=feed)) 
+        aes(color=feed))
 
 # T-testing
 
