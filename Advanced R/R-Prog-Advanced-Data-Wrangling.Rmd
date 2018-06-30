@@ -100,4 +100,34 @@ fin$Expenses <- as.numeric(fin$Expenses)
 typeof(fin$Expenses)
 
 ```
+```{r}
+# Factor to numeric for Revenue variable in dataset
+
+rm(list=ls())
+
+my_vars <- c("Revenue", "Growth")
+
+fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv")
+
+head(fin[my_vars])
+
+fin$Revenue <- gsub("\\$","",fin$Revenue)
+head(fin[my_vars])
+
+fin$Revenue <- gsub(",","",fin$Revenue)
+head(fin[my_vars])
+
+fin$Revenue <- as.numeric(fin$Revenue)
+
+typeof(fin$Revenue)
+
+
+fin$Growth <- gsub("\\%","",fin$Growth)
+
+fin$Growth <- as.numeric(fin$Growth)
+head(fin[my_vars])
+
+typeof(fin$Growth)
+summary(fin[my_vars])
+```
 
