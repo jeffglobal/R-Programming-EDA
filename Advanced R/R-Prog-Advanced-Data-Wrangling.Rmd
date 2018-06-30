@@ -131,3 +131,26 @@ typeof(fin$Growth)
 summary(fin[my_vars])
 ```
 
+```{r}
+# Dealing with Missing Data (NA) and empty values
+fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv")  # , na.strings=c("", "<NA>")
+
+# complete.cases(fin)       # A logical vector of TRUE and FALSE, TRUE if all values
+
+fin[!complete.cases(fin),]  # All rows NOT complete (Only NAs) with all columns (variables)\
+                            # Not empty values or weird strings like <NA>
+rm(list=ls())
+fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv", na.strings=c("","<NA>"))
+                            # Replaces on import character strings with NA
+fin[!complete.cases(fin),]
+
+
+
+
+```
+
+```{r}
+# Filtering: using which() for non-missing data
+
+```
+
