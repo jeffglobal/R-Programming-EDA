@@ -1,0 +1,75 @@
+---
+title: "Advanced R Programming"
+author: Jeffrey Spinner
+copywrite: 2018
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+*Insert Chunk*  *Ctrl+Alt+I*.
+*Preview* *Ctrl+Shift+K* .
+
+
+```{r}
+setwd("D:\\R_Programs_wd\\R_Programming to Git\\Advanced R")  # Notice \\, need for each time if 
+                            # more than one folder deep
+
+fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv")
+
+head(fin)
+tail(fin, 10)   # Can check any arbitrary number of lines, e.g., 10
+
+str(fin)
+summary(fin)
+
+```
+
+
+```{r}
+# Data Wrangling: Changing from a non-factor to a factor
+
+fin$ID <- factor(fin$ID)                  # ID was just a row identifier.
+fin$Inception <- factor(fin$Inception)    # Inception was year of corp creation, a catagorical variable.
+str(fin)
+summary(fin)
+```
+
+
+
+```{r}
+# Data Wrangling: Changing a factor into correct data type
+
+# Factor Variable Trap (FVT)
+
+# Converting into Numerics for Characters not an issue...
+
+a <- c("12", "13", "14", "12", "19")
+b <- as.numeric(a)
+b
+
+```
+
+```{r}
+# Factor Variable Trap (FVT)
+
+# Converting into Numerics for Factors
+
+z <- factor(c("12", "13", "14", "12", "19"))
+z   #Kinda looks like a number vector, but it is NOT.
+```
+
+```{r}
+y <- as.numeric(z)
+y   # Just picked up the levels of each factor!
+```
+```{r}
+z <- factor(c("12", "13", "14", "12", "19"))
+x <- as.numeric(as.character(z))
+x
+typeof(x)
+```
+
+```{r}
+
+```
+
