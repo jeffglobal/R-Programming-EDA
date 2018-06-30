@@ -70,6 +70,34 @@ typeof(x)
 ```
 
 ```{r}
+#FVT Example
+
+fin$Profit <- factor(fin$Profit)
+str(fin)
+fin$Profit <-as.numeric(as.character(fin$Profit))
+str(fin)
+```
+
+```{r}
+#FVT
+# sub() and gsub(), gsub() replaces all, sub() only first instance
+
+closeAllConnections()
+rm(list=ls())
+my_vars <- c("Revenue", "Expenses")
+
+fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv")
+head(fin[my_vars])
+fin$Expenses <- gsub(" Dollars","",fin$Expenses)
+head(fin[my_vars])
+fin$Expenses <- gsub(",","",fin$Expenses)
+head(fin[my_vars])
+
+typeof(fin$Expenses)  # gsub converts factors into characters.
+
+fin$Expenses <- as.numeric(fin$Expenses)
+
+typeof(fin$Expenses)
 
 ```
 
