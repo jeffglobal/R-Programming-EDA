@@ -133,14 +133,14 @@ summary(fin[my_vars])
 
 ```{r}
 # Dealing with Missing Data (NA) and empty values
-fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv")  # , na.strings=c("", "<NA>")
+fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv")  # , na.strings=c("", "<NA>") <NA> is treated as NA
 
 # complete.cases(fin)       # A logical vector of TRUE and FALSE, TRUE if all values
 
 fin[!complete.cases(fin),]  # All rows NOT complete (Only NAs) with all columns (variables)\
-                            # Not empty values or weird strings like <NA>
+                            # Not empty values or strings like "\\$", "," etc <NA> is treated as NA (dup)
 rm(list=ls())
-fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv", na.strings=c("","<NA>"))
+fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv", na.strings=c(""))
                             # Replaces on import character strings with NA
 fin[!complete.cases(fin),]
 
@@ -151,6 +151,129 @@ fin[!complete.cases(fin),]
 
 ```{r}
 # Filtering: using which() for non-missing data
+rm(list=ls())
+fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv", na.strings=c(""))
+fin$Revenue <- gsub("\\$","",fin$Revenue)
+fin$Revenue <- gsub(",","",fin$Revenue)
+
+head(fin)
+fin$Revenue == 9746272
+
+fin[fin$Revenue == 9746272,]  # Produces 3 outputs with 2 NA rows because that record 
+                              # contained some missing data...so doesn't know what to do.
+
+# which only returns TRUE values.
+
+fin[which(fin$Revenue == 9746272),]
+# Viola
+
+fin[which(fin$Employees == 45),]
+
+```
+
+```{r}
+# Filtering: using is.na() for missing data
+ 
+# Ex.: fin[fin$Expenses == NA,] returns a vector of all NAs  (any logical comparison to NA is NA T == 
+# NA is NA, F == NA is NA, NA == NA is NA)
+
+
+# closeAllConnections()
+
+rm(list=ls())
+fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv", na.strings=c(""))
+# Something weird is going on with "<NA>" R is reading it as NA...
+
+fin$Expenses
+is.na(fin$Expenses) # Shows where a;; the NAs are...
+head(fin, 25)
+
+fin[is.na(fin$Expenses),]
+
+fin[is.na(fin$State),]
+```
+```{r}
+# Removing records with missing data (BAD IDEA)
+rm(list=ls())
+fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv", na.strings=c(""))
+fin_backup <- fin   # Always work on backup of actual data set.
+
+fin[!complete.cases(fin),]
+fin[!is.na(fin$Industry),]  # Gives you all the records with only complete data
+fin <- fin[!is.na(fin$Industry),]
+head(fin, 30)
+
+# verify we dealt with all industry cases
+fin_backup[!complete.cases(fin_backup),]
+fin[!complete.cases(fin),]
+```
+
+
+
+
+
+```{r}
+# Resetting the dataframe index
+# rm(list=ls())
+# fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv", na.strings=c(""))
+# fin_backup <- fin  
+
+new_fin<- fin
+new_fin[!is.na(new_fin$Industry),]  # Prints dataset with removed rows
+
+rownames(new_fin) <- 1:nrow(new_fin)# Reorders rows but not efficient
+head(new_fin, 30)
+
+new_fin<-fin
+rownames(new_fin)<-NULL             # Reorders rows efficiently
+head(new_fin, 30)
+
+
+```
+
+```{r}
+# Replacing Missing Data: Factual Analysis (can actually regen missing data) ffs
+rm(list=ls())
+fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv", na.strings=c(""))
+
+backup_fin <- fin
+
+fin[!complete.cases(fin),]
+
+fin[is.na(fin$State) & fin$City == "New York",] # finds all New York cities without NY as state, i.e., NA
+
+fin[is.na(fin$State) & fin$City == "New York", "State"] <- "NY" # won't print out...
+
+# Check:
+
+fin[c(11,379),]
+
+# Left to deal with:
+
+fin[!complete.cases(fin),]
+
+fin[is.na(fin$State) & fin$City == "San Francisco", "State"] <- "CA"
+
+fin[c(84,267),]
+```
+
+```{r}
+# Replacing Missing Data: Median Imputation Method 
+rm(list=ls())
+fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv", na.strings=c(""))
+
+backup_fin <- fin
+
+fin[!complete.cases(fin),]
+
+median(fin[fin$Industry == "Retail", "Employees"], na.rm = T)
+
+# Best Practices 
+med_empl_retail <- median(fin[fin$Industry == "Retail", "Employees"], na.rm = T)
+
+fin[is.na(fin$Employees) & fin$Industry == "Retail", "Employees"] <- med_empl_retail
+
+fin[fin$Employees==28 & fin$Industry == "Retail",]
 
 ```
 
