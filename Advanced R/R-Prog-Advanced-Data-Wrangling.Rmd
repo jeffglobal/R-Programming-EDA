@@ -277,3 +277,26 @@ fin[fin$Employees==28 & fin$Industry == "Retail",]
 
 ```
 
+```{r}
+rm(list=ls())
+fin <- read.csv("D:\\R_Programs_wd\\Future-500.csv", na.strings=c(""))
+
+# head(fin, 30)
+backup_fin <- fin
+
+# fin <- fin[!is.na(fin$Industry),]
+# fin
+
+fin$Growth <- gsub("%","",fin$Growth)
+
+fin$Growth <- as.numeric(fin$Growth)
+
+median_growth_constr <- median(fin[fin$Industry == "Construction", "Growth"], na.rm = T)
+
+
+# fin[is.na(fin$Growth),]
+
+median_growth_constr->fin[is.na(fin$Growth) & fin$Industry=="Construction", "Growth"] 
+fin[8,]
+```
+
