@@ -23,6 +23,7 @@ plot(mpg~wt, data=mtcars)
 mpg_model <- lm(mpg~wt, data=mtcars)
 summary(mpg_model)
 
+qt(0.975, df=28)    # 30 minus 2df for what? 2 sided test?
 plot(mpg_model, which = 1:6)
 ```
 
