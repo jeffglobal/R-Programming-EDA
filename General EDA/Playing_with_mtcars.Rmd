@@ -23,8 +23,36 @@ plot(mpg~wt, data=mtcars)
 mpg_model <- lm(mpg~wt, data=mtcars)
 summary(mpg_model)
 
-qt(0.975, df=28)    # 30 minus 2df for what? 2 sided test?
 plot(mpg_model, which = 1:6)
+
+qt(0.975, df=28)    # Hypothesis testing (T distribution) 30 minus 2df for what? 2 sided test?
+                    # Reject null hypothesis that slope is zero.
+                    
+pt(-9.559, df=28)   # Hypothesis testing on P values (T distribution)
+                    # Reject null hypothesis that slope is zero. (sic) not dup...
+```
+
+
+```{r}
+# Her analysis of assumptions:
+# histogram of residuals
+
+hist(mpg_model$residuals)
+qqnorm(mpg_model$residuals)
+qqline(mpg_model$residuals)
+shapiro.test(mpg_model$residuals)
+
+# My additions to normality testing, H0=It is normal, reject if p>0.05:
+
+
+
+ks.test(mpg_model$residuals, "pnorm", mean=mean(mpg_model$residuals), sd=sd(mpg_model$residuals)) # One-sample Kolmogorov-Smirnov Test
+
+nortest::ad.test(mpg_model$residuals) # Anderson-Darling normality test
+
+fBasics::dagoTest(mpg_model$residuals)    # D'Agostino Normality test NOT effected if data has identical values
+
+
 ```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.

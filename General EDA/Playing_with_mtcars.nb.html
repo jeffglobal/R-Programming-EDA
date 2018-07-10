@@ -222,11 +222,18 @@ Residual standard error: 3.046 on 30 degrees of freedom
 Multiple R-squared:  0.7528,    Adjusted R-squared:  0.7446 
 F-statistic: 91.38 on 1 and 30 DF,  p-value: 1.294e-10</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucXQoMC45NzUsIGRmPTI4KVxuYGBgIn0= -->
-<pre class="r"><code>qt(0.975, df=28)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucXQoMC45NzUsIGRmPTI4KSAgICAjIEh5cG90aGVzaXMgdGVzdGluZyAoVCBkaXN0cmlidXRpb24pIDMwIG1pbnVzIDJkZiBmb3Igd2hhdD8gMiBzaWRlZCB0ZXN0P1xuYGBgIn0= -->
+<pre class="r"><code>qt(0.975, df=28)    # Hypothesis testing (T distribution) 30 minus 2df for what? 2 sided test?</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDIuMDQ4NDA3XG4ifQ== -->
 <pre><code>[1] 2.048407</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICAgICAgICAgICAgICAgICAgICAjIFJlamVjdCBudWxsIGh5cG90aGVzaXMgdGhhdCBzbG9wZSBpcyB6ZXJvLlxucHQoLTkuNTU5LCBkZj0yOCkgICAjIEh5cG90aGVzaXMgdGVzdGluZyBvbiBQIHZhbHVlcyAoVCBkaXN0cmlidXRpb24pXG5gYGAifQ== -->
+<pre class="r"><code>                    # Reject null hypothesis that slope is zero.
+pt(-9.559, df=28)   # Hypothesis testing on P values (T distribution)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEuMjkwMDdlLTEwXG4ifQ== -->
+<pre><code>[1] 1.29007e-10</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxvdChtcGdfbW9kZWwsIHdoaWNoID0gMTo2KVxuYGBgIn0= -->
 <pre class="r"><code>plot(mpg_model, which = 1:6)</code></pre>
@@ -251,12 +258,38 @@ F-statistic: 91.38 on 1 and 30 DF,  p-value: 1.294e-10</code></pre>
 <!-- rnb-plot-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZkJhc2ljczo6ZGFnb1Rlc3QobXBnX21vZGVsJHJlc2lkdWFscykgICAgIyBEJ0Fnb3N0aW5vIE5vcm1hbGl0eSB0ZXN0XG5cbmBgYCJ9 -->
+<pre class="r"><code>fBasics::dagoTest(mpg_model$residuals)    # D'Agostino Normality test
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5UaXRsZTpcbiBEJ0Fnb3N0aW5vIE5vcm1hbGl0eSBUZXN0XG5cblRlc3QgUmVzdWx0czpcbiAgU1RBVElTVElDOlxuICAgIENoaTIgfCBPbW5pYnVzOiAyLjk4NzZcbiAgICBaMyAgfCBTa2V3bmVzczogMS42OTgzXG4gICAgWjQgIHwgS3VydG9zaXM6IDAuMzIxNVxuICBQIFZBTFVFOlxuICAgIE9tbmlidXMgIFRlc3Q6IDAuMjI0NSBcbiAgICBTa2V3bmVzcyBUZXN0OiAwLjA4OTQ1IFxuICAgIEt1cnRvc2lzIFRlc3Q6IDAuNzQ3OSBcblxuRGVzY3JpcHRpb246XG4gTW9uIEp1bCAwOSAyMDozMjowOCAyMDE4IGJ5IHVzZXI6IGplZmZnbG9iYWxcbiJ9 -->
+<pre><code>
+Title:
+ D'Agostino Normality Test
+
+Test Results:
+  STATISTIC:
+    Chi2 | Omnibus: 2.9876
+    Z3  | Skewness: 1.6983
+    Z4  | Kurtosis: 0.3215
+  P VALUE:
+    Omnibus  Test: 0.2245 
+    Skewness Test: 0.08945 
+    Kurtosis Test: 0.7479 
+
+Description:
+ Mon Jul 09 20:32:08 2018 by user: jeffglobal</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <p>Add a new chunk by clicking the <em>Insert Chunk</em> button on the toolbar or by pressing <em>Ctrl+Alt+I</em>.</p>
 <p>When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the <em>Preview</em> button or press <em>Ctrl+Shift+K</em> to preview the HTML file).</p>
 <p>The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike <em>Knit</em>, <em>Preview</em> does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.</p>
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiANCg0KVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiANCg0KYGBge3J9DQpsaWJyYXJ5KGRhdGFzZXRzKQ0KbGlicmFyeShnZ3Bsb3QyKQ0KZGF0YShtdGNhcnMpDQoNCmJhY2ttdGNhcnM8LW10Y2Fycw0KDQpncGxvdDwtZ2dwbG90KG10Y2FycywgYWVzKHg9bXBnLCB5PXd0KSkrDQogIGdlb21fcG9pbnQoKQ0KZ3Bsb3QNCg0KcGxvdChtcGd+d3QsIGRhdGE9bXRjYXJzKQ0KDQptcGdfbW9kZWwgPC0gbG0obXBnfnd0LCBkYXRhPW10Y2FycykNCnN1bW1hcnkobXBnX21vZGVsKQ0KDQpxdCgwLjk3NSwgZGY9MjgpICAgICMgMzAgbWludXMgMmRmIGZvciB3aGF0PyAyIHNpZGVkIHRlc3Q/DQpwbG90KG1wZ19tb2RlbCwgd2hpY2ggPSAxOjYpDQpgYGANCg0KQWRkIGEgbmV3IGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqSW5zZXJ0IENodW5rKiBidXR0b24gb24gdGhlIHRvb2xiYXIgb3IgYnkgcHJlc3NpbmcgKkN0cmwrQWx0K0kqLg0KDQpXaGVuIHlvdSBzYXZlIHRoZSBub3RlYm9vaywgYW4gSFRNTCBmaWxlIGNvbnRhaW5pbmcgdGhlIGNvZGUgYW5kIG91dHB1dCB3aWxsIGJlIHNhdmVkIGFsb25nc2lkZSBpdCAoY2xpY2sgdGhlICpQcmV2aWV3KiBidXR0b24gb3IgcHJlc3MgKkN0cmwrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4NCg0KVGhlIHByZXZpZXcgc2hvd3MgeW91IGEgcmVuZGVyZWQgSFRNTCBjb3B5IG9mIHRoZSBjb250ZW50cyBvZiB0aGUgZWRpdG9yLiBDb25zZXF1ZW50bHksIHVubGlrZSAqS25pdCosICpQcmV2aWV3KiBkb2VzIG5vdCBydW4gYW55IFIgY29kZSBjaHVua3MuIEluc3RlYWQsIHRoZSBvdXRwdXQgb2YgdGhlIGNodW5rIHdoZW4gaXQgd2FzIGxhc3QgcnVuIGluIHRoZSBlZGl0b3IgaXMgZGlzcGxheWVkLg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiANCg0KVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiANCg0KYGBge3J9DQpsaWJyYXJ5KGRhdGFzZXRzKQ0KbGlicmFyeShnZ3Bsb3QyKQ0KZGF0YShtdGNhcnMpDQoNCmJhY2ttdGNhcnM8LW10Y2Fycw0KDQpncGxvdDwtZ2dwbG90KG10Y2FycywgYWVzKHg9bXBnLCB5PXd0KSkrDQogIGdlb21fcG9pbnQoKQ0KZ3Bsb3QNCg0KcGxvdChtcGd+d3QsIGRhdGE9bXRjYXJzKQ0KDQptcGdfbW9kZWwgPC0gbG0obXBnfnd0LCBkYXRhPW10Y2FycykNCnN1bW1hcnkobXBnX21vZGVsKQ0KDQpwbG90KG1wZ19tb2RlbCwgd2hpY2ggPSAxOjYpDQoNCnF0KDAuOTc1LCBkZj0yOCkgICAgIyBIeXBvdGhlc2lzIHRlc3RpbmcgKFQgZGlzdHJpYnV0aW9uKSAzMCBtaW51cyAyZGYgZm9yIHdoYXQ/IDIgc2lkZWQgdGVzdD8NCiAgICAgICAgICAgICAgICAgICAgIyBSZWplY3QgbnVsbCBoeXBvdGhlc2lzIHRoYXQgc2xvcGUgaXMgemVyby4NCiAgICAgICAgICAgICAgICAgICAgDQpwdCgtOS41NTksIGRmPTI4KSAgICMgSHlwb3RoZXNpcyB0ZXN0aW5nIG9uIFAgdmFsdWVzIChUIGRpc3RyaWJ1dGlvbikNCiAgICAgICAgICAgICAgICAgICAgIyBSZWplY3QgbnVsbCBoeXBvdGhlc2lzIHRoYXQgc2xvcGUgaXMgemVyby4gKHNpYykgbm90IGR1cC4uLg0KYGBgDQoNCg0KYGBge3J9DQojIEhlciBhbmFseXNpcyBvZiBhc3N1bXB0aW9uczoNCiMgaGlzdG9ncmFtIG9mIHJlc2lkdWFscw0KDQpoaXN0KG1wZ19tb2RlbCRyZXNpZHVhbHMpDQpxcW5vcm0obXBnX21vZGVsJHJlc2lkdWFscykNCnFxbGluZShtcGdfbW9kZWwkcmVzaWR1YWxzKQ0Kc2hhcGlyby50ZXN0KG1wZ19tb2RlbCRyZXNpZHVhbHMpDQoNCiMgTXkgYWRkaXRpb25zIHRvIG5vcm1hbGl0eSB0ZXN0aW5nLCBIMD1JdCBpcyBub3JtYWwsIHJlamVjdCBpZiBwPjAuMDU6DQoNCg0KDQprcy50ZXN0KG1wZ19tb2RlbCRyZXNpZHVhbHMsICJwbm9ybSIsIG1lYW49bWVhbihtcGdfbW9kZWwkcmVzaWR1YWxzKSwgc2Q9c2QobXBnX21vZGVsJHJlc2lkdWFscykpICMgT25lLXNhbXBsZSBLb2xtb2dvcm92LVNtaXJub3YgVGVzdA0KDQpub3J0ZXN0OjphZC50ZXN0KG1wZ19tb2RlbCRyZXNpZHVhbHMpICMgQW5kZXJzb24tRGFybGluZyBub3JtYWxpdHkgdGVzdA0KDQpmQmFzaWNzOjpkYWdvVGVzdChtcGdfbW9kZWwkcmVzaWR1YWxzKSAgICAjIEQnQWdvc3Rpbm8gTm9ybWFsaXR5IHRlc3QgTk9UIGVmZmVjdGVkIGlmIGRhdGEgaGFzIGlkZW50aWNhbCB2YWx1ZXMNCg0KDQpgYGANCg0KQWRkIGEgbmV3IGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqSW5zZXJ0IENodW5rKiBidXR0b24gb24gdGhlIHRvb2xiYXIgb3IgYnkgcHJlc3NpbmcgKkN0cmwrQWx0K0kqLg0KDQpXaGVuIHlvdSBzYXZlIHRoZSBub3RlYm9vaywgYW4gSFRNTCBmaWxlIGNvbnRhaW5pbmcgdGhlIGNvZGUgYW5kIG91dHB1dCB3aWxsIGJlIHNhdmVkIGFsb25nc2lkZSBpdCAoY2xpY2sgdGhlICpQcmV2aWV3KiBidXR0b24gb3IgcHJlc3MgKkN0cmwrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4NCg0KVGhlIHByZXZpZXcgc2hvd3MgeW91IGEgcmVuZGVyZWQgSFRNTCBjb3B5IG9mIHRoZSBjb250ZW50cyBvZiB0aGUgZWRpdG9yLiBDb25zZXF1ZW50bHksIHVubGlrZSAqS25pdCosICpQcmV2aWV3KiBkb2VzIG5vdCBydW4gYW55IFIgY29kZSBjaHVua3MuIEluc3RlYWQsIHRoZSBvdXRwdXQgb2YgdGhlIGNodW5rIHdoZW4gaXQgd2FzIGxhc3QgcnVuIGluIHRoZSBlZGl0b3IgaXMgZGlzcGxheWVkLg0K</div>
 
 
 
