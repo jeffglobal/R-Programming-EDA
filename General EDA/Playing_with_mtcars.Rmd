@@ -51,6 +51,10 @@ ks.test(mpg_model$residuals, "pnorm", mean=mean(mpg_model$residuals), sd=sd(mpg_
 nortest::ad.test(mpg_model$residuals) # Anderson-Darling normality test
 
 fBasics::dagoTest(mpg_model$residuals)    # D'Agostino Normality test NOT effected if data has identical values
+                                          # Chi2 can only be used on categorical variable(s), need to bin the data prior to use otherwise.
+                                          # Sample size > 5, and Data is randomly sampled.
+
+# Look for lilliefors test...
 
 
 ```
