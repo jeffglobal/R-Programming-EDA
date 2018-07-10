@@ -1,0 +1,137 @@
+---
+title: "R Notebook"
+output: 
+  html_notebook: 
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 7
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(MASS)
+head(Pima.tr, 20)
+str(Pima.tr)
+summary(Pima.tr)
+
+```
+
+
+```{r}
+Pima.tr$bp
+
+shapiro.test(Pima.tr$bp)
+
+# ks.test(Pima.tr$bp, "pnorm", mean=mean(mpg_model$residuals), sd=sd(mpg_model$residuals)) TIES PRESENT
+
+nortest::ad.test(Pima.tr$bp) 
+
+fBasics::dagoTest(Pima.tr$bp)
+
+bpplot<-ggplot(Pima.tr, aes(x=bp))+
+  geom_freqpoly(bins=10)+
+  geom_histogram(bins=10)
+bpplot
+
+bpplot2<-ggplot(Pima.tr, aes(x=bp))+
+  geom_histogram(bins=30)+
+  geom_freqpoly(bins=30)
+bpplot2
+
+bpplot3<-ggplot(Pima.tr, aes(x=bp))+
+  geom_density(fill = "darkred", colour="red", alpha = 0.2)+
+bpplot3
+```
+
+
+```{r}
+require(MASS)
+require(GGally)     # Required for ggpairs
+require(ggplot2)    # GGally supersets on ggplot2
+require(ggpubr)
+
+require(gridExtra)
+library('datasets')
+
+pairs(Pima.tr[1:4])
+p_diabetes <-ggpairs(data=Pima.tr[1:4])
+p_diabetes
+
+pairs(Pima.tr[5:8])
+p_diabetes2 <-ggpairs(data=Pima.tr[5:8])
+p_diabetes2
+
+```
+
+```{r}
+# Correlation Analysis
+library(MASS)
+library(ggplot2)
+library(reshape2)
+
+# Helper Functions
+# Get lower triangle of the correlation matrix
+  get_lower_tri<-function(cormat){
+    cormat[upper.tri(cormat)] <- NA
+    return(cormat)
+  }
+  # Get upper triangle of the correlation matrix
+  get_upper_tri <- function(cormat){
+    cormat[lower.tri(cormat)]<- NA
+    return(cormat)
+  }
+
+
+
+
+cor_Pima <- round(cor(Pima.tr[1:7]),2)
+
+
+melted_Pima <- melt(upper_tri, na.rm = TRUE)
+
+reorder_Pima <- function(cor_Pima){
+# Use correlation between variables as distance
+dd <- as.dist((1-cor_Pima)/2)
+hc <- hclust(dd)
+cor_Pima <-cor_Pima[hc$order, hc$order]
+}
+
+# Reorder the correlation matrix
+cor_Pima <- reorder_Pima(cor_Pima)
+upper_tri <- get_upper_tri(cor_Pima)
+# Melt the correlation matrix
+melted_Pima <- melt(upper_tri, na.rm = TRUE)
+# Create a ggheatmap
+ggheatmap <- ggplot(melted_Pima, aes(Var2, Var1, fill = value))+
+ geom_tile(color = "white")+
+ scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+   midpoint = 0, limit = c(-1,1), space = "Lab", 
+    name="Pearson\nCorrelation") +
+  theme_minimal()+ # minimal theme
+ theme(axis.text.x = element_text(angle = 45, vjust = 1, 
+    size = 12, hjust = 1))+
+ coord_fixed()
+
+ggheatmap+
+  geom_text(aes(Var2, Var1, label = value), color = "black", size = 4) +
+theme(
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  panel.grid.major = element_blank(),
+  panel.border = element_blank(),
+  panel.background = element_blank(),
+  axis.ticks = element_blank(),
+  legend.justification = c(1, 0),
+  legend.position = c(0.6, 0.7),
+  legend.direction = "horizontal")+
+  guides(fill = guide_colorbar(barwidth = 7, barheight = 1,
+                title.position = "top", title.hjust = 0.5))
+# Print the heatmap
+# print(ggheatmap)
+
+
+```
+
