@@ -1,0 +1,66 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(ggplot2)
+
+stdy_months <- c(78,93,86,57,45,60,28,31,22,9,12,4)
+treat <- gl(4,3)
+lm.model <- lm(stdy_months~treat)
+anova(lm.model)
+
+stdy_df <- data.frame(cbind(stdy_months, treat))
+
+stdyplt <- ggplot(stdy_df, aes(x=treat, y=stdy_months))+
+    geom_point(color=treat)
+
+stdyplt
+
+stdy_months_Ordered <- sort(stdy_months)  
+# Putz professor didn't give the right data!
+str(stdy_months_Ordered)
+
+stdyplt2 <- ggplot(stdy_df, aes(x=treat, y=stdy_months))+
+  geom_point(color=treat)
+  
+print(stdyplt2)
+```
+```{r}
+# She added the years variable, and randomized placement in groups by years
+# having cancer because derp, stage of cancer highest predictor irrespective 
+# of type of treatment.
+
+library(ggplot2)
+
+set.seed(1234)
+months2 <- c(sample(c(78,93,86,57,45,60,28,31,22,9,12,4),12,replace=F))
+treat <- gl(4,3)
+
+# She thinks number of years having cancer is equivalent to stage of cancer, derp.
+years2 <- c(sample(c(2.3,3.4,1.8,6.2,7.3,9.6,11,12.2,14.8,17.3,16,5.8),12,replace=F)) 
+
+lm2.model <- lm(months2~treat)
+anova(lm2.model)
+
+stdy_df <- data.frame(cbind(months2, treat))
+
+stdyplt <- ggplot(stdy_df, aes(x=treat, y=months2))+
+    geom_point(color=treat)
+
+stdyplt
+
+stdy_df2 <- data.frame(cbind(months2, years2))
+
+stdyplt2 <- ggplot(stdy_df2, aes(x=years2, y=months2))+
+    geom_point(color=treat)
+stdyplt2
+
+
+```
+
