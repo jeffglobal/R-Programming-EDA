@@ -496,4 +496,8 @@ ggheatmap+
                 title.position = "top", title.hjust = 0.5))
 # print(ggheatmap)
 ```
+```{r}
+mpg_model2 <- step(lm(mpg~., data = mtcars))
+summary(mpg_model2)
+```
 
