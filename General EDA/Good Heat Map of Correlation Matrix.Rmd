@@ -1,0 +1,98 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+setwd("D:\\R_Programs_wd\\R_Programming to Git\\General EDA")
+library(GGally)
+library(gridExtra)
+require(ggplot2)
+require(reshape2)
+
+mtcars_back <- mtcars
+
+sub1 <- c("mpg", "disp", "hp")
+
+mtcarsSub1 <- mtcars[, sub1]
+mtcarsPt <- ggpairs(data=mtcarsSub1, # data.frame with variables
+        columns=1:3, # columns to plot, default to all.
+        title="Colinearity of MPG, DISP & HP" #  , title of the plot
+        # ggplot2::aes(color = "blue")
+        ) # was color = "sex" for tips dataset aesthetics, ggplot2 style
+mtcarsPt
+
+# Create the correlation heatmap with ggplot2
+# The package reshape is required to melt the correlation matrix :
+
+reorder_cormat <- function(cormat){
+# Use correlation between variables as distance
+dd <- as.dist((1-cormat)/2)
+hc <- hclust(dd)
+cormat <-cormat[hc$order, hc$order]
+}
+
+# Get lower triangle of the correlation matrix
+get_lower_tri<-function(cormat){
+  cormat[upper.tri(cormat)] <- NA
+  return(cormat)
+}
+# Get upper triangle of the correlation matrix
+get_upper_tri <- function(cormat){
+  cormat[lower.tri(cormat)]<- NA
+  return(cormat)
+}
+
+# Create Correlation Matrix
+cormat <- round(cor(mtcarsSub1),2)
+# head(cormat)
+
+# Reorder the correlation matrix
+cormat <- reorder_cormat(cormat)
+upper_tri <- get_upper_tri(cormat)
+
+# Melt the correlation matrix
+melted_cormat <- melt(upper_tri, na.rm = TRUE)
+
+# Create a ggheatmap
+ggheatmap <- ggplot(melted_cormat, aes(Var2, Var1, fill = value))+
+ geom_tile(color = "white")+
+ scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+   midpoint = 0, limit = c(-1,1), space = "Lab", 
+    name="Pearson\nCorrelation") +
+  theme_minimal()+ # minimal theme
+ theme(axis.text.x = element_text(angle = 45, vjust = 1, 
+    size = 12, hjust = 1),
+    axis.text.y = element_text(angle = 45, vjust = 1, size = 12, hjust = 1))+
+ coord_fixed()
+
+# Print the heatmap
+ggheatmap+
+  geom_text(aes(Var2, Var1, label = value), color = "black", size = 4) + # The values IN the boxes
+    xlab("HeatMap") + ylab("MTCARS")+
+  theme(
+  # axis.title.x = element_text(),
+  # axis.title.y = element_text(),
+  axis.title.x = element_text(color="#000066", face="bold", size=20),
+  axis.title.y = element_text(color="#000066", face="bold", size=20),
+  panel.grid.major = element_blank(),
+  panel.border = element_blank(),
+  panel.background = element_blank(),
+  axis.ticks = element_blank(),
+  legend.justification = c(1, 0),
+  legend.position = c(0.6, 0.7),
+  legend.direction = "horizontal")+
+  guides(fill = guide_colorbar(barwidth = 7, barheight = 1,
+                title.position = "top", title.hjust = 0.5))
+# print(ggheatmap)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
