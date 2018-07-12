@@ -1,0 +1,37 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(BHH2)
+
+
+# R creates 2^k factorial design matrix for the ding a lings
+print(X <- ffDesMatrix(4))
+
+```
+
+```{r}
+
+# I'm missing something.  ANOVA should be on one continues response/dependent variable and categorical independent/explanatory variables.  It looks like she is using boy, the dependent variable as continuous, when how tf is that possible, and the matA and matB are continuous wear independent/explanatory variables...wtf?
+
+# Then she states you can use ANCOVA to analyse the dataset to remove covariance if found to design the 2^k factorial experiment follow up.
+
+data("shoes.data")
+#summary(shoes.data)
+#str(shoes.data)
+
+shoes.aov <- aov(boy ~ matA * matB, data=shoes.data)
+summary(shoes.aov)
+
+#------------------------------
+shoes.lm <- lm(boy ~ matA * matB, data=shoes.data)
+shoes.ancova <- aov(shoes.lm)
+summary(shoes.ancova)
+
+shoes.side.ancov <- aov(matA ~ boy * sideA, data=shoes.data)
+summary(shoes.side.ancov)
+```
+

@@ -1,0 +1,42 @@
+---
+title: "R Notebook"
+output: 
+  html_notebook: 
+    fig_height: 6
+---
+
+
+
+```{r}
+library(rpart)
+library(tree)
+
+summary(car.test.frame)
+my.tree <- tree(Mileage ~ Weight, car.test.frame)
+print(my.tree)
+summary(my.tree)
+plot(my.tree)
+text(my.tree)
+```
+```{r}
+car.tree <- rpart(Mileage ~ Weight, data=car.test.frame,
+                  control = list(minsplit=10, minbucket=5, cp =0.0001),
+                  method = "anova")
+plot(car.tree, uniform =T)
+text(car.tree, digits =4, use.n=T)
+summary(car.tree)
+
+fit <- rpart(Mileage ~ Weight, data=car.test.frame,
+                  control = list(minsplit=10, minbucket=5, cp =0.0001),
+                  method = "anova")
+plotcp(fit, upper=c("splits"), col=2, lwd=2)
+```
+
+```{r}
+fit2 <- rpart(Mileage ~ Price + Country + Reliability + Type, data=car.test.frame,
+                  method = "anova")
+plot(fit2, uniform =T)
+text(fit2, digits =4, use.n=T)
+plotcp(fit2, upper=c("splits"), col=2, lwd=2)
+```
+

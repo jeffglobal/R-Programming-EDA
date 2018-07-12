@@ -1,0 +1,27 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+# MANOVA of skull data from Egypt
+
+library(HSAUR)
+ 
+summary(skulls)
+```
+
+```{r}
+sk.lm.model <- lm(cbind(mb, bh, bl, nh)~epoch, data=skulls)
+sk.man.model <- manova(sk.lm.model)
+sk.man.model
+summary(sk.man.model, test="Hotelling-Lawley")
+summary(sk.man.model, test="Wilks")
+summary(sk.man.model, test="Pillai")
+summary(sk.man.model, test="Roy")
+#summary.aov(sk.man.model)
+#summary(manova(sk.man.model))
+```
+

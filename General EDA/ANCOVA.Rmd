@@ -37,6 +37,8 @@ print(stdyplt2)
 # of type of treatment.
 
 library(ggplot2)
+# Center Plot Titles from now on...
+theme_update(plot.title = element_text(hjust = 0.5))
 
 set.seed(1234)
 months2 <- c(sample(c(78,93,86,57,45,60,28,31,22,9,12,4),12,replace=F))
@@ -58,7 +60,17 @@ stdyplt
 stdy_df2 <- data.frame(cbind(months2, years2))
 
 stdyplt2 <- ggplot(stdy_df2, aes(x=years2, y=months2))+
-    geom_point(color=treat)
+  ggtitle("Ancova the Hard Way")+
+  xlab("Years Having Cancer")+
+  ylab("Survival in Months")+
+  theme(
+    #theme_update(plot.title = element_text(hjust = 0.5)),
+    axis.title.x = element_text(color="#000066", face="bold", size=10),
+    axis.title.y = element_text(color="#000066", face="bold", size=10),
+    #plot.title = element_text(color="#000066", face="bold", size=20),
+    axis.text.x = element_text(angle = 45, vjust = 1, size = 12, hjust = 1),
+    axis.text.y = element_text(angle = 45, vjust = 1, size = 12, hjust = 1))+
+    geom_point(color=treat, size = 2.5)
 stdyplt2
 
 

@@ -1,0 +1,72 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(ggplot2)
+library(GGally)
+library(ggpubr)
+library(gridExtra)
+
+# str(iris)
+
+plt <- ggplot(iris, aes(x=Species, y=Sepal.Length))+
+  geom_boxplot()
+
+plt2 <- ggplot(iris, aes(x=Species, y=Sepal.Width))+
+  geom_boxplot()
+
+plt3 <- ggplot(iris, aes(x=Species, y=Petal.Length))+
+  geom_boxplot()
+
+plt4 <- ggplot(iris, aes(x=Species, y=Petal.Width))+
+  geom_boxplot()
+
+# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
+ggarrange(plt, plt2, plt3, plt4 + rremove("x.text"), # + rremove("x.text"
+          labels = c("A", "B", "C", "D"),
+          ncol = 4, nrow = 1)
+
+#or
+
+grid.arrange(plt, plt2, plt3, plt4 + rremove("x.text"), 
+             ncol = 4, nrow = 1)
+
+
+
+
+
+``` 
+
+
+```{r}
+man.model <- manova(cbind(Sepal.Length, Petal.Length)~ Species, data=iris)
+print(man.model)
+summary(man.model)
+summary.aov(man.model)
+```
+
+
+```{r}
+man.all.model <- manova(cbind(Sepal.Length, Petal.Length, Sepal.Width, Petal.Width)~Species, data=iris)
+# print(man.all.model)
+# summary(man.all.model)
+summary.aov(man.all.model)[1]
+summary.aov(man.all.model)[2]
+summary.aov(man.all.model)[3]
+summary.aov(man.all.model)[4]
+
+# What is significant to see is F Value...notice Petal.Length @ 1180 and Petal.Width @ 960
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
