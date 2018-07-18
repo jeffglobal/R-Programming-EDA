@@ -1,0 +1,31 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+library(ggplot2)
+library(MASS)
+names(Boston)
+
+lm.Experiment <- lm(medv ~ lstat, data = Boston)
+lm.Experiment2 <- lm(medv ~ lstat +I(lstat^2), data = Boston) 
+#Notice "I(lstat^2)" the "I" is required or it just fits a regular lm(medv~lstat, data=Boston)
+
+summary(lm.Experiment)
+plot(lm.Experiment, which = 1:6)
+p.exper <- ggplot(Boston, aes(x=medv, y=lstat))+
+  geom_point(aes(color=lstat))+
+  geom_smooth(color="red", method = lm) # Forces a linear regression fit.  lm=medv~lstat does not!  It gives the polynomial fit.
+p.exper
+
+summary(lm.Experiment2)
+plot(lm.Experiment2, which = 1:6)
+p.exper2 <- ggplot(Boston, aes(x=medv, y=lstat))+
+  geom_point(aes(color=lstat))+
+  geom_smooth()
+p.exper2
+```
+

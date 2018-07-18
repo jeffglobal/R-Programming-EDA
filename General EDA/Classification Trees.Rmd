@@ -1,0 +1,17 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(datasets)
+data("iris")
+str(iris)
+
+iris.classif <- tree(Species ~ Sepal.Width + Petal.Width, data=iris)
+plot(iris.classif)
+text(iris.classif)
+summary(iris.classif)
+```
+
