@@ -37,6 +37,18 @@ fit2 <- rpart(Mileage ~ Price + Country + Reliability + Type, data=car.test.fram
                   method = "anova")
 plot(fit2, uniform =T)
 text(fit2, digits =4, use.n=T)
-plotcp(fit2, upper=c("splits"), col=2, lwd=2)
+plotcp(fit2, col=2, lwd=2)
+summary(fit2)
+```
+```{r}
+#summary(stagec)
+str(stagec)
+pg.model <- rpart(pgtime ~  age + g2 + grade + gleason, data=stagec)
+pg.model2 <- tree(pgtime ~  age + g2 + grade + gleason, data=stagec)
+plot(pg.model, main="pg.model")
+text(pg.model)
+plot(pg.model2, main="pg.model2")
+text(pg.model2)
+plotcp(pg.model, col=2, lwd=2, main="pg.model")
 ```
 
