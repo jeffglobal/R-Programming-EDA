@@ -7,25 +7,101 @@ output: html_notebook
 
 ```{r}
 library(ggplot2)
+library(ggpmisc)
+library(colorspace)
+library(tidyr)
+library(mgcv)
+library(RColorBrewer)
+library(wesanderson)
 library(MASS)
 names(Boston)
 
 lm.Experiment <- lm(medv ~ lstat, data = Boston)
 lm.Experiment2 <- lm(medv ~ lstat +I(lstat^2), data = Boston) 
 #Notice "I(lstat^2)" the "I" is required or it just fits a regular lm(medv~lstat, data=Boston)
+lm.Experiment3 <- lm(medv ~ lstat + I(lstat^2) + I(lstat^3), data = Boston)
+lm.Experiment4 <- lm(medv ~ lstat + I(lstat^2) + I(lstat^3) + I(lstat^4), data = Boston)
 
 summary(lm.Experiment)
 plot(lm.Experiment, which = 1:6)
-p.exper <- ggplot(Boston, aes(x=medv, y=lstat))+
+p.exper <- ggplot(Boston, aes(x=lstat, y=medv))+
   geom_point(aes(color=lstat))+
-  geom_smooth(color="red", method = lm) # Forces a linear regression fit.  lm=medv~lstat does not!  It gives the polynomial fit.
+  scale_colour_gradientn(colours = terrain.colors(3))+
+  geom_smooth(color="red", method = lm)+ # Forces a linear regression fit.  lm=medv~lstat does not!  It gives the polynomial fit.
+  ylim(0,50)+
+  labs(title="Linear Regression", x="Low SES", y="Median House Valuation", color="Low SES", caption = "(based on data from Boston Database)")+
+  theme(plot.title = element_text(hjust=0.5))
 p.exper
+
 
 summary(lm.Experiment2)
 plot(lm.Experiment2, which = 1:6)
-p.exper2 <- ggplot(Boston, aes(x=medv, y=lstat))+
+p.exper2 <- ggplot(Boston, aes(x=lstat, y=medv))+
   geom_point(aes(color=lstat))+
-  geom_smooth()
+  scale_colour_gradientn(colours = terrain.colors(3))+
+#  geom_smooth()+
+  stat_smooth(method = "lm", formula = y~poly(x,2), size = 1)+
+  ylim(0,50)+
+  labs(title="2nd Degree Polynomial Regression", x="Low SES", y="Median House Valuation", color="Low SES", caption = "(based on data from Boston Database)")+
+  theme(plot.title = element_text(hjust=0.5))
 p.exper2
+
+summary(lm.Experiment3)
+plot(lm.Experiment3, which = 1:6)
+p.exper3 <- ggplot(Boston, aes(x=lstat, y=medv))+
+  geom_point(aes(color=lstat))+
+  scale_colour_gradientn(colours = terrain.colors(3))+
+#  geom_smooth(color="grey")+  This works
+  stat_smooth(method = "lm", formula = y ~ poly(x,3), size=1)+
+# stat_smooth not plotting.
+  ylim(0,50)+
+  labs(title="3rd Degree Polynomial Regression", x="Low SES", y="Median House Valuation", color="Low SES", caption = "(based on data from Boston Database)")+
+  theme(plot.title = element_text(hjust=0.5))
+p.exper3
+
+summary(lm.Experiment4)
+plot(lm.Experiment4, which = 1:6)
+p.exper4 <- ggplot(Boston, aes(x=lstat, y=medv))+
+  geom_point(aes(color=lstat))+
+  scale_colour_gradientn(colours = terrain.colors(3))+
+#  geom_smooth(color="grey")+  This works
+  stat_smooth(method = "lm", formula = y ~ poly(x,4), size=1)+
+# stat_smooth not plotting...had to use "y" and "x" not variable labels...ffs
+  ylim(0,50)+
+  labs(title="4th Degree Polynomial Regression", x="Low SES", y="Median House Valuation", color="Low SES", caption = "(based on data from Boston Database)")+
+  theme(plot.title = element_text(hjust=0.5))
+p.exper4
+
+formula1 <- y ~ x
+formula2 <- y ~ poly(x,2)
+formula3 <- y ~ poly(x,3)
+formula4 <- y ~ poly(x,4)
+
+formulas <- c(formula1, formula2, formula3, formula4)
+
+p.experAll <- ggplot(Boston, aes(x=lstat, y=medv))+
+  geom_point(aes(color=lstat))+
+  scale_colour_gradientn(colours = terrain.colors(3))+
+  stat_smooth(method = "lm", formula = y ~ x, size = 1, color="blue", se=F)+
+  stat_smooth(method = "lm", formula = y ~ poly(x,2), size = 1, color="green", se=F)+
+  stat_smooth(method = "lm", formula = y ~ poly(x,3), size= 1, color="mediumorchid2", se=F)+  
+  stat_smooth(method = "lm", formula = y ~ poly(x,4), size= 1, color="cyan", se=F)+
+#  geom_smooth(color="grey")+
+  ylim(0,50)+
+  stat_poly_eq(aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")),formula = formula1, eq.with.lhs = "italic(hat(y))~`=`~", parse = TRUE, label.x = 25, color="blue")+
+  stat_poly_eq(aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")), formula = formula2, parse = TRUE, eq.with.lhs = "italic(hat(y))~`=`~", label.y = 40, label.x = 25, color="green")+
+  stat_poly_eq(aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")), formula = formula3, parse = TRUE, eq.with.lhs = "italic(hat(y))~`=`~", label.y = 32, label.x = 25, color="mediumorchid2")+
+  stat_poly_eq(aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")), formula = formula4, parse = TRUE, eq.with.lhs = "italic(hat(y))~`=`~", label.y = 1, label.x= 20, color="cyan")+
+  
+  labs(title="All Regression Functions", x="Low SES", y="Median House Valuation", color="Low SES", caption = "(based on data from Boston Database)")+
+  theme(plot.title = element_text(hjust=0.5))
+p.experAll
+
+```
+```{r}
+
+```
+```{r}
+
 ```
 
