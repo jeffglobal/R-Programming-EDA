@@ -42,6 +42,7 @@ p.exper2 <- ggplot(Boston, aes(x=lstat, y=medv))+
 #  geom_smooth()+
   stat_smooth(method = "lm", formula = y~poly(x,2), size = 1)+
   ylim(0,50)+
+  stat_poly_eq(aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")), formula = formula2, parse = TRUE, eq.with.lhs = "italic(hat(y))~`=`~", label.x = 25)+
   labs(title="2nd Degree Polynomial Regression", x="Low SES", y="Median House Valuation", color="Low SES", caption = "(based on data from Boston Database)")+
   theme(plot.title = element_text(hjust=0.5))
 p.exper2
@@ -99,9 +100,48 @@ p.experAll
 
 ```
 ```{r}
+# Step Functions for Overfit Potential Datasets.
+library(ggplot2)
+library(ggpmisc)
+library(colorspace)
+library(tidyr)
+library(MASS)
+names(Boston)
+
+People <- "cyan2"
+plot <- ggplot(Boston, aes(x = lstat, y=medv))+
+  geom_point(aes(color="People"), size=1.75, pch=36)+
+  stat_smooth(method = "lm", formula = y ~ cut(x, breaks = c(-Inf, 5, 10, 15, 20, Inf)))+
+  labs(title="Step Function", x="Low SES %", y="Median House Value ($1,000's)", caption = "(based on data from Boston Database)")+
+  theme(plot.title = element_text(hjust=0.5))+
+#  theme(legend.position="none")  Doesn't work here, works on other graph below!
+
+
+stepPlot
+
+#Can't remove the freakin legend...
 
 ```
 ```{r}
+library(SemiPar)
+library(ggplot2)
+library(ggpmisc)
+library(colorspace)
+data(onions)
+attach(onions)
 
+onion.plot <- ggplot(onions, aes(x=dens, y=yield))+
+  theme(plot.title = element_text(hjust=0.5), legend.position="none")+
+  geom_point(aes(color="palegreen3"), size=2.5, pch=111)+
+  stat_smooth(method = "lm", formula = y ~ poly(x,1), se=F, color="brown3")+
+  stat_smooth(method = "lm", formula = y ~ poly(x,2), se=F, color="orchid3")+
+  stat_smooth(method = "lm", formula = y ~ poly(x,3), se=F, color="lightsteelblue3")+
+  labs(x="Density", y="Yield", title="Yield v. Density (Linear, 2nd Order, 3rd Order)")+
+  annotate("segment", x = c(125,175), xend = c(147,180), y = c(125,125), yend = c(65,62), colour = c("lightsteelblue3","orchid3"), size=0.8, alpha=0.6, arrow=arrow())+
+  annotate("text", x = c(125,175), y = c(135,135), label = c("3rd Order", "2nd Order") , color=c("lightsteelblue3", "palevioletred3"), size=4 , angle=0, fontface="bold")
+  
+         
+
+onion.plot
 ```
 
